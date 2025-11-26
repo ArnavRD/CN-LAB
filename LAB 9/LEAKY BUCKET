@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int bucketSize, incoming, outgoing, stored = 0;
+
+    cout << "Enter bucket size: ";
+    cin >> bucketSize;
+
+    cout << "Enter outgoing rate: ";
+    cin >> outgoing;
+
+    cout << "Enter number of incoming packets: ";
+    cin >> incoming;
+
+    int packets;
+
+    while (incoming--) {
+        cout << "\nEnter incoming packet size: ";
+        cin >> packets;
+
+        // If packet + stored exceeds bucket capacity → drop
+        if (packets + stored > bucketSize) {
+            cout << "Bucket overflow! " << (packets - (bucketSize - stored))
+                 << " packet(s) dropped!\n";
+            stored = bucketSize;  
+        } else {
+            stored += packets;
+            cout << "Packet stored. Current bucket content: " << stored << endl;
+        }
+
+        // leak outgoing packets
+        if (stored > outgoing) {
+            stored -= outgoing;
+        } else {
+            stored = 0;
+        }
+
+        cout << "Packets left in bucket after leaking: " << stored << endl;
+    }
+
+    return 0;
+}
+Packets left in bucket after leaking: 0
